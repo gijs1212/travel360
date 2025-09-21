@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Travel360 - Reizen</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main>
+    <section class="section">
+        <h1>Reisfoto's &amp; 360° ervaringen</h1>
+        <p>Ontdek de reizen van Gijs en laat reacties achter op de mooiste momenten.</p>
+    </section>
+    <section class="section">
+        <div class="trip-grid">
+            <div class="card" th:each="trip : ${trips}">
+                <img th:if="${#lists.isEmpty(trip.photos)}" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Reis" />
+                <img th:if="${!#lists.isEmpty(trip.photos)}" th:src="${storage.publicUrl(trip.photos.get(0).storagePath)}" alt="Cover" />
+                <div class="card-body">
+                    <h2 th:text="${trip.title}"></h2>
+                    <p th:text="${trip.description}"></p>
+                    <a class="btn-link" th:href="@{'/trip/' + ${trip.id}}">Bekijk reis</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

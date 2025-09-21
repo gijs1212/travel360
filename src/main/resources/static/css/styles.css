@@ -1,0 +1,250 @@
+:root {
+    --primary: #0f766e;
+    --secondary: #0ea5e9;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --text: #1f2937;
+    --muted: #64748b;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.navbar {
+    background: var(--surface);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 1rem 0;
+}
+
+.navbar .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar .brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.navbar .links a {
+    margin-right: 1rem;
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.navbar .links a:hover {
+    color: var(--primary);
+}
+
+.navbar .auth {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar .auth .btn {
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+.navbar .auth .btn-secondary {
+    background: var(--secondary);
+}
+
+main {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.trip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(15, 118, 110, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card .card-body {
+    padding: 1rem;
+}
+
+.btn-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-link.secondary {
+    background: var(--secondary);
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.alert.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.alert.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.error {
+    color: #dc2626;
+    font-size: 0.9rem;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.photo-card {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 1px 4px rgba(15, 118, 110, 0.08);
+}
+
+.photo-card img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-item {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+textarea {
+    min-height: 120px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem;
+}
+
+table th {
+    background: #f1f5f9;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+iframe.polarsteps {
+    border: none;
+    border-radius: 12px;
+    width: 100%;
+    height: 600px;
+}
+
+.photo-viewer {
+    width: 100%;
+    height: 480px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.gallery-thumb {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.comment-form button,
+.actions button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+}
+
+.comment-form button.secondary,
+.actions button.secondary {
+    background: var(--secondary);
+}

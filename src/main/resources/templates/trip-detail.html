@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${trip.title} + ' - Travel360'"></title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@5/dist/photo-sphere-viewer.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@5/dist/photo-sphere-viewer.min.js"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main>
+    <section class="section">
+        <h1 th:text="${trip.title}"></h1>
+        <p th:text="${trip.description}"></p>
+        <div class="actions">
+            <span th:if="${trip.startDate != null}" th:text="${'Start: ' + trip.startDate}"></span>
+            <span th:if="${trip.endDate != null}" th:text="${'Einde: ' + trip.endDate}"></span>
+            <a th:if="${trip.polarstepsUrl != null}" class="btn-link secondary" th:href="${trip.polarstepsUrl}" target="_blank" rel="noopener">Bekijk trip op Polarsteps</a>
+        </div>
+    </section>
+
+    <section class="section" th:if="${trip.polarstepsEmbedUrl != null}">
+        <h2>Polarsteps kaart</h2>
+        <iframe class="polarsteps" th:src="${trip.polarstepsEmbedUrl}" loading="lazy" allowfullscreen></iframe>
+    </section>
+
+    <section class="section">
+        <h2>Foto's</h2>
+        <div class="photo-grid">
+            <div class="photo-card" th:each="photo : ${photos}" th:id="${'photo-' + photo.id}">
+                <div th:if="${photo.isIs360()}" class="photo-viewer">
+                    <div th:id="${'viewer-' + photo.id}" class="viewer" style="height: 320px;"></div>
+                    <script th:inline="javascript">
+                        const config[[${photo.id}]] = {
+                            imageUrl: [[${storage.publicUrl(photo.storagePath)}]],
+                            caption: [[${photo.title}]]
+                        };
+                        document.addEventListener('DOMContentLoaded', () => {
+                            if (window.PhotoSphereViewer) {
+                                new PhotoSphereViewer.Viewer({
+                                    container: document.getElementById('viewer-' + [[${photo.id}]]),
+                                    panorama: config[[${photo.id}]].imageUrl,
+                                    caption: config[[${photo.id}]].caption,
+                                    touchmoveTwoFingers: true,
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+                <img th:if="${!photo.isIs360()}" class="gallery-thumb" th:src="${storage.publicUrl(photo.storagePath)}" th:alt="${photo.title}" />
+                <h3 th:text="${photo.title}"></h3>
+                <p th:text="${'Dag: ' + photo.day}"></p>
+                <p th:text="${photo.description}"></p>
+                <div>
+                    <h4>Reacties</h4>
+                    <ul class="comment-list">
+                        <li class="comment-item" th:each="comment : ${photo.comments}">
+                            <strong th:text="${comment.author.username}"></strong>
+                            <span th:text="${#temporals.format(comment.createdAt, 'dd-MM-yyyy HH:mm')}"></span>
+                            <p th:text="${comment.content}"></p>
+                        </li>
+                    </ul>
+                    <div th:if="${#httpServletRequest.remoteUser != null}" class="comment-form">
+                        <form th:action="@{'/trip/' + ${trip.id} + '/photo/' + ${photo.id} + '/comment'}" method="post" th:object="${commentForm}">
+                            <div class="form-group">
+                                <label th:for="${'content-' + photo.id}">Jouw reactie</label>
+                                <textarea th:id="${'content-' + photo.id}" name="content" th:field="*{content}"></textarea>
+                                <p class="error" th:if="${errorPhotoId != null and errorPhotoId.equals(photo.id) and #fields.hasErrors('content')}" th:errors="*{content}"></p>
+                            </div>
+                            <button type="submit">Plaats reactie</button>
+                        </form>
+                    </div>
+                    <div th:if="${#httpServletRequest.remoteUser == null}">
+                        <p><a th:href="@{/login}">Log in</a> om een reactie te plaatsen.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

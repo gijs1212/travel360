@@ -1,0 +1,21 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="navbar">
+    <nav class="navbar">
+        <div class="container">
+            <a class="brand" th:href="@{/}">Travel360</a>
+            <div class="links">
+                <a th:href="@{/}">Reizen</a>
+                <a th:if="${#authorization.expression('hasRole(''ROLE_UPLOADER'')')}" th:href="@{/dashboard}">Dashboard</a>
+            </div>
+            <div class="auth">
+                <form th:if="${#httpServletRequest.remoteUser != null}" th:action="@{/logout}" method="post">
+                    <span class="username">Hallo, <span th:text="${#httpServletRequest.remoteUser}"></span></span>
+                    <button type="submit" class="btn btn-secondary">Uitloggen</button>
+                </form>
+                <div th:if="${#httpServletRequest.remoteUser == null}">
+                    <a class="btn" th:href="@{/login}">Inloggen</a>
+                    <a class="btn btn-secondary" th:href="@{/register}">Registreren</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
