@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${trip.title} + ' beheren - Travel360'"></title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main>
+    <section class="section">
+        <h1 th:text="${trip.title}"></h1>
+        <a class="btn-link" th:href="@{/dashboard}">Terug naar dashboard</a>
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+    </section>
+
+    <section class="section">
+        <h2>Reisgegevens</h2>
+        <form th:action="@{'/dashboard/trip/' + ${trip.id}}" method="post" th:object="${tripForm}">
+            <div class="form-group">
+                <label for="title">Titel</label>
+                <input id="title" type="text" th:field="*{title}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Beschrijving</label>
+                <textarea id="description" th:field="*{description}"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="startDate">Startdatum</label>
+                <input id="startDate" type="date" th:field="*{startDate}">
+            </div>
+            <div class="form-group">
+                <label for="endDate">Einddatum</label>
+                <input id="endDate" type="date" th:field="*{endDate}">
+            </div>
+            <div class="form-group">
+                <label for="polarstepsUrl">Polarsteps link</label>
+                <input id="polarstepsUrl" type="url" th:field="*{polarstepsUrl}">
+            </div>
+            <button type="submit">Opslaan</button>
+        </form>
+    </section>
+
+    <section class="section">
+        <h2>Foto's uploaden</h2>
+        <form th:action="@{'/dashboard/trip/' + ${trip.id} + '/photos'}" method="post" enctype="multipart/form-data" th:object="${photoForm}">
+            <div class="form-group">
+                <label for="file">Afbeelding</label>
+                <input id="file" type="file" name="file" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="title">Titel</label>
+                <input id="photoTitle" type="text" th:field="*{title}" required>
+            </div>
+            <div class="form-group">
+                <label for="day">Dag (nummer of datum)</label>
+                <input id="day" type="text" th:field="*{day}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Beschrijving</label>
+                <textarea id="photoDescription" th:field="*{description}"></textarea>
+            </div>
+            <div class="form-group">
+                <label><input type="checkbox" th:field="*{is360}"> 360° foto</label>
+            </div>
+            <button type="submit">Upload</button>
+        </form>
+    </section>
+
+    <section class="section">
+        <h2>Bestaande foto's</h2>
+        <div class="photo-grid">
+            <div class="photo-card" th:each="photo : ${photos}">
+                <img class="gallery-thumb" th:src="${storage.publicUrl(photo.storagePath)}" th:alt="${photo.title}">
+                <h3 th:text="${photo.title}"></h3>
+                <p th:text="${'Dag: ' + photo.day}"></p>
+                <p th:text="${photo.description}"></p>
+                <p th:if="${photo.isIs360()}">360° foto</p>
+                <form th:action="@{'/dashboard/trip/' + ${trip.id} + '/photos/' + ${photo.id} + '/delete'}" method="post" onsubmit="return confirm('Foto verwijderen?');">
+                    <button type="submit" class="secondary">Verwijder</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

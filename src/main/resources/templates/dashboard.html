@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Uploader dashboard - Travel360</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main>
+    <section class="section">
+        <h1>Dashboard</h1>
+        <p>Beheer reizen en uploads voor Travel360.</p>
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+    </section>
+
+    <section class="section">
+        <h2>Nieuwe reis</h2>
+        <form th:action="@{/dashboard/trip}" method="post" th:object="${tripForm}">
+            <div class="form-group">
+                <label for="title">Titel</label>
+                <input id="title" type="text" th:field="*{title}" required>
+                <p class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+            </div>
+            <div class="form-group">
+                <label for="description">Beschrijving</label>
+                <textarea id="description" th:field="*{description}"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="startDate">Startdatum</label>
+                <input id="startDate" type="date" th:field="*{startDate}">
+            </div>
+            <div class="form-group">
+                <label for="endDate">Einddatum</label>
+                <input id="endDate" type="date" th:field="*{endDate}">
+            </div>
+            <div class="form-group">
+                <label for="polarstepsUrl">Polarsteps link</label>
+                <input id="polarstepsUrl" type="url" th:field="*{polarstepsUrl}">
+            </div>
+            <button type="submit">Opslaan</button>
+        </form>
+    </section>
+
+    <section class="section">
+        <h2>Reizen</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Titel</th>
+                <th>Aangemaakt</th>
+                <th>Acties</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="trip : ${trips}">
+                <td th:text="${trip.title}"></td>
+                <td th:text="${#temporals.format(trip.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td class="actions">
+                    <a class="btn-link" th:href="@{'/dashboard/trip/' + ${trip.id}}">Beheer</a>
+                    <form th:action="@{'/dashboard/trip/' + ${trip.id} + '/delete'}" method="post" onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
+                        <button type="submit" class="secondary">Verwijder</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

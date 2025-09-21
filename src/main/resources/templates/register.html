@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registreren - Travel360</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main>
+    <section class="section">
+        <h1>Maak een account</h1>
+        <p>Registreer als commenter om reacties te plaatsen op foto's.</p>
+        <form th:action="@{/register}" method="post" th:object="${registrationRequest}">
+            <div class="form-group">
+                <label for="username">Gebruikersnaam</label>
+                <input id="username" type="text" th:field="*{username}" required>
+                <p class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mailadres</label>
+                <input id="email" type="email" th:field="*{email}" required>
+                <p class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            </div>
+            <div class="form-group">
+                <label for="password">Wachtwoord</label>
+                <input id="password" type="password" th:field="*{password}" required>
+                <small>Minimaal 8 tekens.</small>
+                <p class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+            </div>
+            <button type="submit">Account aanmaken</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>
